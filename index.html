@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Weather or Not</title>
+    <meta charset="UTF-8" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="src/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Zen+Maru+Gothic:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/98eaaf365e.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+
+  <body>
+    <div class="container mx-auto my-4">
+      <!-- whole kit and caboodle -->
+      <div class="content-box">
+        <div class="card-body">
+          <!-- Initial text re place & current temps -->
+          <div class="row">
+            <div class="col-11 mx-auto mt-3">
+              <div class="card">
+                <div class="card-body inner">
+                  <h1>WEATHER</h1>
+                  <br />
+                  <!-- TODAY -->
+                  <h5 class="card-title" id="today">#</h5>
+                  <p class="today-temp">
+                    <span id="currentHour">#</span> \\
+                    <span id="highToday" class="high"> 35°</span>
+                    <span id="precip-today"
+                      ><i class="fa-solid fa-cloud"></i> \\
+                    </span>
+                    <span id="lowToday" class="low">12°</span
+                    ><span><i class="fa-solid fa-cloud-moon"></i></span>
+                  </p>
+                  <!-- Fahrenheit to Celsius toggle -->
+
+                  <div id="toggle-box" class="form-check form-switch">
+                    <input
+                      class="form-check-input toggle"
+                      type="checkbox"
+                      role="switch"
+                      id="flexSwitch"
+                    />
+                    °CELSIUS
+                  </div>
+
+                  <button id="current-location">LOCATION</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- search form -->
+          <form class="mx-5">
+            <div class="input-group my-3">
+              <input
+                type="text"
+                class="form-control"
+                id="city"
+                placeholder="   ENTER CITY"
+                aria-label="ENTER CITY"
+                aria-describedby="basic-addon1"
+              />
+              <span class="input-group-text" id="basic-addon1">
+                <button id="searchSubmit">
+                  <svg
+                    width="60"
+                    height="30"
+                    fill="currentColor"
+                    class="bi bi-search-heart"
+                    viewBox="0 0 16 16"
+                    type="submit"
+                  >
+                    <path
+                      d="M6.5 4.482c1.664-1.673 5.825 1.254 0 5.018-5.825-3.764-1.664-6.69 0-5.018Z"
+                    ></path>
+                    <path
+                      d="M13 6.5a6.471 6.471 0 0 1-1.258 3.844c.04.03.078.062.115.098l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1.007 1.007 0 0 1-.1-.115h.002A6.5 6.5 0 1 1 13 6.5ZM6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Z"
+                    ></path>
+                  </svg>
+                </button>
+              </span>
+            </div>
+          </form>
+          <!-- START blocks re: tomorrow thru next days -->
+          <!-- 1st Card -->
+          <div class="row my-2 mx-auto">
+            <div class="col-3 px-0">
+              <div class="card mx-4">
+                <div class="card-body inner py-3">
+                  <!-- TOMORROW -->
+                  <h5 class="card-title mt-2" id="firstDay">#</h5>
+                  <p class="card-text">
+                    <span id="tomoHigh" class="high"> 38° </span>
+                    <span><i class="fa-solid fa-cloud-sun"></i></span>
+                    <br />
+                    <span id="tomoLow" class="low"> 22°</span>
+                    <span><i class="fa-solid fa-cloud-moon"></i></span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2nd Card -->
+            <div class="col-3 px-0">
+              <div class="card mx-4">
+                <div class="card-body inner">
+                  <!-- NEXT DAY -->
+                  <h5 class="card-title mt-2" id="secondDay">#</h5>
+                  <p class="card-text next-day">
+                    <span id="nextHigh" class="high"> 35°</span>
+                    <span><i class="fa-solid fa-cloud-rain"></i></span><br />
+                    <span id="nextLow" class="low">14°</span
+                    ><span><i class="fa-solid fa-moon"></i></span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- 3rd Card -->
+            <div class="col-3 px-0">
+              <div class="card mx-4">
+                <div class="card-body inner">
+                  <!-- FOLLOWING DAY -->
+                  <h5 class="card-title mt-2" id="thirdDay">#</h5>
+                  <p class="card-text following-day">
+                    <span id="followHigh" class="high"> 47°</span>
+                    <span><i class="fa-solid fa-cloud-sun"></i></span><br />
+                    <span id="followLow" class="low"> 33°</span>
+                    <span><i class="fa-solid fa-wind"></i></span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4th Card -->
+            <div class="col-3 px-0">
+              <div class="card mx-4">
+                <div class="card-body inner">
+                  <!-- DAY AFTER -->
+                  <h5 class="card-title mt-2" id="fourthDay">#</h5>
+                  <p class="card-text day-after-that">
+                    <span id="lastHigh" class="high"> 55°</span>
+                    <span><i class="fa-solid fa-sun"></i></span><br />
+                    <span id="lastLow" class="low"> 32°</span>
+                    <span><i class="fa-solid fa-moon"></i></span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- END blocks re: tomorrow thru next days -->
+        </div>
+      </div>
+    </div>
+
+    <script src="src/index.js"></script>
+  </body>
+  <footer>❤ MADE BY SYLVIA T. ❤</footer>
+</html>

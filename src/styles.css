@@ -1,0 +1,119 @@
+body,
+.content-box {
+  background-image: radial-gradient(
+    circle,
+    #c1c2ff,
+    #c9bfff,
+    #d2bcfd,
+    #dcb9fb,
+    #e5b6f8,
+    #dcbdfc,
+    #d4c3fe,
+    #cdc9ff,
+    #b9d7ff,
+    #aae4ff,
+    #a3efff,
+    #a9f8ff
+  );
+}
+h1,
+footer {
+  color: #da70d6;
+  font-family: "Fredoka One", cursive, fantasy;
+  text-align: center;
+  text-shadow: 2px 2px 4px #ff0000, 0 0 1em #1606f3, 0 0 0.7em #0505fc;
+}
+h1 {
+  display: block;
+  font-size: 65px;
+}
+footer {
+  font-size: 13px;
+}
+.top-box {
+  margin-bottom: 0;
+}
+.high,
+.innerHTML {
+  font-weight: 800;
+}
+
+.content-box {
+  border: 2px solid rgba(252, 255, 247, 0.4);
+  border-radius: 65px;
+  box-shadow: 0 0 12px 12px rgba(255, 255, 255, 0.4);
+  font-family: "Zen Maru Gothic", monospace;
+  margin: auto;
+  max-width: 1060px;
+}
+.card,
+.input-group {
+  background: rgb(255, 255, 255, 0.1);
+  border: 2px solid rgba(252, 255, 247, 0.4);
+  border-radius: 65px;
+  box-shadow: 0 0 12px 12px rgba(255, 255, 255, 0.3);
+  text-align: center;
+}
+.form-control,
+.input-group-text {
+  background: rgb(255, 255, 255, 0.1);
+  border-radius: 65px;
+  font-size: 24px;
+}
+.input-group-text {
+  border-left: 2px solid rgba(252, 255, 247, 0.5);
+}
+.card-title {
+  font-size: 35px;
+  font-family: "Fredoka One", cursive, fantasy;
+  color: #da70d6;
+  text-shadow: 2px 2px 4px #ff0000, 0 0 1em #1606f3, 0 0 0.7em #0505fc;
+}
+
+.card-text,
+.today-temp,
+#currentHour,
+#currentMinute {
+  font-size: 32px;
+}
+
+#toggle-box,
+#current-location {
+  background: rgb(255, 255, 255, 0.1);
+  border: 2px solid rgba(252, 255, 247, 0.4);
+  border-radius: 65px;
+  box-shadow: 0 0 12px 12px rgba(255, 255, 255, 0.3);
+  color: #da70d6;
+  text-shadow: 2px 2px 2px #ac0000, 0 0 1em #1606f3, 0 0 0.7em #0505fc;
+  font-family: "Fredoka One", cursive, fantasy;
+}
+
+#toggle-box {
+  display: inline;
+  font-size: 16px;
+  padding: 1em 2em 1em 5em;
+  margin: 0 5px 0 0;
+}
+#flexSwitch {
+  cursor: pointer;
+  float: none;
+  margin-top: 1.2em;
+  margin-left: -3.5em;
+}
+#current-location {
+  font-size: 15px;
+  padding: 1em 3em;
+}
+#searchSubmit {
+  background: transparent;
+  border: none;
+}
+#toggle-box:hover,
+#current-location:hover {
+  background-image: radial-gradient(
+    circle,
+    #dcd0fe,
+    rgba(163, 240, 255, 0.6),
+    #dcd0fe
+  );
+}
