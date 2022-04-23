@@ -107,13 +107,14 @@ let currentLocationButton = document.querySelector("#current-location");
 currentLocationButton.addEventListener("click", geoFetch);
 
 // SEARCHBAR CLICK EVENT
-function searchBar(event) {
-  // updates h1 to city name
+let input = document.querySelector("#city");
+let units = "imperial";
+function makeFirstCallFromInput(event) {
   event.preventDefault();
-  let input = document.querySelector("#city");
-  let queryCity = document.querySelector("h1");
-  queryCity.innerHTML = `${input.value.toUpperCase()}`;
-
+  let apiKey = "ce488b4abdc5eaf9759b2ac9b9434934";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${input.value}&units=${units}&exclude=minutely,hourly,alerts&APPid=${apiKey}`;
+  document.querySelector("h1").innerHTML = input.value.toUpperCase();
+  axios.get(apiUrl).then(updateURL);
   // updates temps based on city entered = city => coordinates => api call w/ forecast
   function updateURL(response) {
     let latCoords = response.data.coord.lat;
@@ -122,12 +123,12 @@ function searchBar(event) {
     axios.get(apiUrl).then(showTemperature);
 
     function showTemperature(response) {
-      document.querySelector("#highToday").innerHTML = Math.round(
+      document.querySelector("#highToday").innerHTML = `${Math.round(
         response.data.current.temp
-      );
-      document.querySelector("#lowToday").innerHTML = Math.round(
+      )}°`;
+      document.querySelector("#lowToday").innerHTML = `${Math.round(
         response.data.daily[0].temp.min
-      );
+      )}°`;
       document.querySelector("#tomoHigh").innerHTML = `${Math.round(
         response.data.daily[1].temp.max
       )}°`;
@@ -154,32 +155,26 @@ function searchBar(event) {
       )}°`;
     }
   }
-
-  let apiKey = "ce488b4abdc5eaf9759b2ac9b9434934";
-  let units = "imperial";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${input.value}&units=${units}&exclude=minutely,hourly,alerts&APPid=${apiKey}`;
-
-  axios.get(apiUrl).then(updateURL);
 }
 let weatherCity = document.querySelector("form");
-weatherCity.addEventListener("submit", searchBar);
+weatherCity.addEventListener("submit", makeFirstCallFromInput);
 
 // CELSIUS TOGGLE CLICK EVENT
-let click = document.querySelector("#flexSwitch");
-let countClicks = 0;
-click.addEventListener("click", celsiusClicks);
-
-function celsiusClicks() {
+function toggleSwitchClicks() {
+  let countClicks = 0;
   countClicks += 1;
   if (countClicks % 2 !== 0) {
     showCelsius();
   } else if (countClicks % 2 === 0) {
-    hideCelsius();
+    showImperial();
   }
 }
+let click = document.querySelector("#flexSwitch");
+click.addEventListener("click", toggleSwitchClicks);
+
 function showCelsius() {}
 
-function hideCelsius() {}
+function showImperial() {}
 
 // END OF CELSIUS TOGGLE
 console.log("spam v for rave");
