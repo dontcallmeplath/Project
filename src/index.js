@@ -59,11 +59,14 @@ function currentTime() {
   }
 }
 // displays current location's temps on click
+let units = "imperial";
+let apiKey = "ce488b4abdc5eaf9759b2ac9b9434934";
 function fetchCurrentPosition(position) {
   let lat = position.coords.latitude;
   let long = position.coords.longitude;
 
   function pullCoords(response) {
+    document.querySelector("h1").innerHTML = "TODAY";
     document.querySelector("#highToday").innerHTML = `${Math.round(
       response.data.current.temp
     )}°`;
@@ -95,8 +98,7 @@ function fetchCurrentPosition(position) {
       response.data.daily[4].temp.min
     )}°`;
   }
-  let apiKey = "ce488b4abdc5eaf9759b2ac9b9434934";
-  let units = "imperial";
+
   let url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=minutely,hourly,alerts&units=${units}&appid=${apiKey}`;
   axios.get(url).then(pullCoords);
 }
@@ -108,17 +110,23 @@ currentLocationButton.addEventListener("click", geoFetch);
 
 // SEARCHBAR CLICK EVENT
 let input = document.querySelector("#city");
-let units = "imperial";
 function makeFirstCallFromInput(event) {
   event.preventDefault();
-  let apiKey = "ce488b4abdc5eaf9759b2ac9b9434934";
+
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${input.value}&units=${units}&exclude=minutely,hourly,alerts&APPid=${apiKey}`;
-  document.querySelector("h1").innerHTML = input.value.toUpperCase();
-  axios.get(apiUrl).then(updateURL);
+  fetch(apiUrl).then(function (response) {
+    if (response.status == 200) {
+      axios.get(apiUrl).then(updateURL);
+    } else {
+      document.querySelector("h1").innerHTML = "CHECK CITY & TRY AGAIN";
+    }
+  });
+
   // updates temps based on city entered = city => coordinates => api call w/ forecast
   function updateURL(response) {
     let latCoords = response.data.coord.lat;
     let lonCoords = response.data.coord.lon;
+    document.querySelector("h1").innerHTML = response.data.name.toUpperCase();
     apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${latCoords}&lon=${lonCoords}&exclude=minutely,hourly,alerts&units=imperial&appid=${apiKey}`;
     axios.get(apiUrl).then(showTemperature);
 
