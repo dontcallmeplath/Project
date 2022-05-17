@@ -21,167 +21,196 @@
       href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Zen+Maru+Gothic:wght@500&display=swap"
       rel="stylesheet"
     />
-    <script
+    <!-- <script
       src="https://kit.fontawesome.com/98eaaf365e.js"
       crossorigin="anonymous"
-    ></script>
+    ></script> -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </head>
 
   <body>
-    <div class="container mx-auto my-4">
-      <!-- whole kit and caboodle -->
-      <div class="content-box">
-        <div class="card-body">
-          <!-- Initial text re place & current temps -->
-          <div class="row">
-            <div class="col-11 mx-auto mt-3">
-              <div class="card">
-                <div class="card-body inner">
-                  <h1>WEATHER</h1>
+    <div class="content-box">
+      <!-- right side box re place & current temps -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body inner" id="current-info-card">
+              <h1>WEATHER</h1>
+
+              <!-- TODAY -->
+              <div id="currentDateAndTime">
+                <span id="today">#</span>
+                <span id="at">@</span>
+                <span id="currentHour">#</span>
+              </div>
+              <hr />
+              <h2>NASHVILLE</h2>
+              <!-- TODAY temperatures -->
+              <div class="row today-temp" id="todayInfo">
+                <div class="col-3">
+                  <span id="now">now:</span>
+                  <span id="currentToday">24°</span>
+                </div>
+
+                <div class="col-3">
+                  <span id="hi">hi:</span>
+                  <span id="highToday" class="high"> 35°</span>
+                </div>
+
+                <div class="col-3">
+                  <span id="lo">lo:</span>
+                  <span id="lowToday" class="low">12°</span>
+                </div>
+              </div>
+              <!-- search form -->
+              <form>
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="city"
+                    placeholder="   ENTER CITY"
+                    aria-label="ENTER CITY"
+                    aria-describedby="basic-addon1"
+                  />
+                  <!-- lil heart search button -->
+                  <span class="input-group-text" id="basic-addon1">
+                    <button id="searchSubmit">
+                      <svg
+                        width="60"
+                        height="30"
+                        fill="currentColor"
+                        class="bi bi-search-heart"
+                        viewBox="0 0 16 16"
+                        type="submit"
+                      >
+                        <path
+                          d="M6.5 4.482c1.664-1.673 5.825 1.254 0 5.018-5.825-3.764-1.664-6.69 0-5.018Z"
+                        ></path>
+                        <path
+                          d="M13 6.5a6.471 6.471 0 0 1-1.258 3.844c.04.03.078.062.115.098l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1.007 1.007 0 0 1-.1-.115h.002A6.5 6.5 0 1 1 13 6.5ZM6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Z"
+                        ></path>
+                      </svg>
+                    </button>
+                  </span>
+                </div>
+              </form>
+              <!-- Fahrenheit to Celsius toggle -->
+              <div id="toggle-box" class="form-check form-switch">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  role="switch"
+                  id="flexSwitch"
+                />
+                °CELSIUS
+              </div>
+              <!-- button to show current location's weather info -->
+              <button id="current-location">LOCATION</button>
+            </div>
+          </div>
+        </div>
+        <!-- START blocks re: tomorrow thru next days -->
+        <!-- 1st Card -->
+        <div class="row" id="temp-cards-top">
+          <div class="col-4 px-0 mx-4">
+            <div class="card">
+              <div class="card-body inner">
+                <!-- TOMORROW -->
+                <h5 class="card-title mt-2" id="firstDay">#</h5>
+                <p class="card-text">
+                  <img
+                    id="tomoIcon"
+                    src="https://openweathermap.org/img/wn/01n.png"
+                  />
+                  <span><sup>hi:</sup></span>
+                  <span id="tomoHigh" class="high"> 38° </span>
                   <br />
-                  <!-- TODAY -->
-                  <h5 class="card-title" id="today">#</h5>
-                  <p class="today-temp">
-                    <span id="currentHour">#</span> \\
-                    <span id="highToday" class="high"> 35°</span>
-                    <span id="precip-today"
-                      ><i class="fa-solid fa-cloud"></i> \\
-                    </span>
-                    <span id="lowToday" class="low">12°</span
-                    ><span><i class="fa-solid fa-cloud-moon"></i></span>
-                  </p>
-                  <!-- Fahrenheit to Celsius toggle -->
-
-                  <div id="toggle-box" class="form-check form-switch">
-                    <input
-                      class="form-check-input toggle"
-                      type="checkbox"
-                      role="switch"
-                      id="flexSwitch"
-                    />
-                    °CELSIUS
-                  </div>
-
-                  <button id="current-location">LOCATION</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- search form -->
-          <form class="mx-5">
-            <div class="input-group my-3">
-              <input
-                type="text"
-                class="form-control"
-                id="city"
-                placeholder="   ENTER CITY"
-                aria-label="ENTER CITY"
-                aria-describedby="basic-addon1"
-              />
-              <span class="input-group-text" id="basic-addon1">
-                <button id="searchSubmit">
-                  <svg
-                    width="60"
-                    height="30"
-                    fill="currentColor"
-                    class="bi bi-search-heart"
-                    viewBox="0 0 16 16"
-                    type="submit"
-                  >
-                    <path
-                      d="M6.5 4.482c1.664-1.673 5.825 1.254 0 5.018-5.825-3.764-1.664-6.69 0-5.018Z"
-                    ></path>
-                    <path
-                      d="M13 6.5a6.471 6.471 0 0 1-1.258 3.844c.04.03.078.062.115.098l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1.007 1.007 0 0 1-.1-.115h.002A6.5 6.5 0 1 1 13 6.5ZM6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11Z"
-                    ></path>
-                  </svg>
-                </button>
-              </span>
-            </div>
-          </form>
-          <!-- START blocks re: tomorrow thru next days -->
-          <!-- 1st Card -->
-          <div class="row my-2 mx-auto">
-            <div class="col-3 px-0">
-              <div class="card mx-4">
-                <div class="card-body inner py-3">
-                  <!-- TOMORROW -->
-                  <h5 class="card-title mt-2" id="firstDay">#</h5>
-                  <p class="card-text">
-                    <span id="tomoHigh" class="high"> 38° </span>
-                    <span><i class="fa-solid fa-cloud-sun"></i></span>
-                    <br />
-                    <span id="tomoLow" class="low"> 22°</span>
-                    <span><i class="fa-solid fa-cloud-moon"></i></span>
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <!-- 2nd Card -->
-            <div class="col-3 px-0">
-              <div class="card mx-4">
-                <div class="card-body inner">
-                  <!-- NEXT DAY -->
-                  <h5 class="card-title mt-2" id="secondDay">#</h5>
-                  <p class="card-text next-day">
-                    <span id="nextHigh" class="high"> 35°</span>
-                    <span><i class="fa-solid fa-cloud-rain"></i></span><br />
-                    <span id="nextLow" class="low">14°</span
-                    ><span><i class="fa-solid fa-moon"></i></span>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <!-- 3rd Card -->
-            <div class="col-3 px-0">
-              <div class="card mx-4">
-                <div class="card-body inner">
-                  <!-- FOLLOWING DAY -->
-                  <h5 class="card-title mt-2" id="thirdDay">#</h5>
-                  <p class="card-text following-day">
-                    <span id="followHigh" class="high"> 47°</span>
-                    <span><i class="fa-solid fa-cloud-sun"></i></span><br />
-                    <span id="followLow" class="low"> 33°</span>
-                    <span><i class="fa-solid fa-wind"></i></span>
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <!-- 4th Card -->
-            <div class="col-3 px-0">
-              <div class="card mx-4">
-                <div class="card-body inner">
-                  <!-- DAY AFTER -->
-                  <h5 class="card-title mt-2" id="fourthDay">#</h5>
-                  <p class="card-text day-after-that">
-                    <span id="lastHigh" class="high"> 55°</span>
-                    <span><i class="fa-solid fa-sun"></i></span><br />
-                    <span id="lastLow" class="low"> 32°</span>
-                    <span><i class="fa-solid fa-moon"></i></span>
-                  </p>
-                </div>
+                  <span><sup>lo:</sup></span>
+                  <span id="tomoLow" class="low"> 22°</span>
+                </p>
               </div>
             </div>
           </div>
 
-          <!-- END blocks re: tomorrow thru next days -->
+          <!-- 2nd Card -->
+          <div class="col-4 px-0 mx-4">
+            <div class="card">
+              <div class="card-body inner">
+                <!-- NEXT DAY -->
+                <h5 class="card-title mt-2" id="secondDay">#</h5>
+                <p class="card-text next-day">
+                  <img
+                    id="nextIcon"
+                    src="https://openweathermap.org/img/wn/01n.png"
+                  />
+                  <span><sup>hi:</sup></span>
+                  <span id="nextHigh" class="high"> 35°</span><br />
+                  <span><sup>lo:</sup></span>
+                  <span id="nextLow" class="low">14°</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3rd Card -->
+        <div class="row" id="temp-cards-bottom">
+          <div class="col-4 px-0 mx-4">
+            <div class="card">
+              <div class="card-body inner">
+                <!-- FOLLOWING DAY -->
+                <h5 class="card-title mt-2" id="thirdDay">#</h5>
+                <p class="card-text following-day">
+                  <img
+                    id="followIcon"
+                    src="https://openweathermap.org/img/wn/01n.png"
+                  />
+                  <span><sup>hi:</sup></span>
+                  <span id="followHigh" class="high"> 47°</span>
+                  <br />
+                  <span><sup>lo:</sup></span>
+                  <span id="followLow" class="low"> 33°</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4th Card -->
+          <div class="col-4 px-0 mx-4">
+            <div class="card">
+              <div class="card-body inner">
+                <!-- DAY AFTER -->
+                <h5 class="card-title mt-2" id="fourthDay">#</h5>
+                <p class="card-text day-after-that">
+                  <img
+                    id="lastIcon"
+                    src="https://openweathermap.org/img/wn/01n.png"
+                  />
+                  <span><sup>hi:</sup></span>
+                  <span id="lastHigh" class="high"> 55°</span>
+                  <br />
+                  <span><sup>lo:</sup></span>
+                  <span id="lastLow" class="low"> 32°</span>
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+      <!-- END blocks re: tomorrow thru next days -->
     </div>
 
+    <footer>
+      ❤
+      <a
+        href="https://github.com/dontcallmeplath/WeatherApp"
+        target="_blank"
+        class="footer-link"
+        >OPEN-SOURCE CODE</a
+      >
+      BY SYLVIA T. ❤
+    </footer>
     <script src="src/index.js"></script>
   </body>
-  <footer>
-    ❤
-    <a
-      href="https://github.com/dontcallmeplath/WeatherApp"
-      target="_blank"
-      class="footer-link"
-      >OPEN-SOURCE CODE</a
-    >
-    BY SYLVIA T. ❤
-  </footer>
 </html>

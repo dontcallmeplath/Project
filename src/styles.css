@@ -17,41 +17,105 @@ body,
   );
 }
 h1,
+h2,
 footer {
   color: #da70d6;
-  font-family: "Fredoka One", cursive, fantasy;
+  font-family: "Fredoka One", fantasy, cursive;
   text-align: center;
   text-shadow: 2px 2px 4px #ff0000, 0 0 1em #1606f3, 0 0 0.7em #0505fc;
 }
 h1 {
   display: block;
-  font-size: 65px;
+  font-size: 85px;
+  line-height: 1;
+  margin-bottom: 9px;
+}
+hr {
+  border-top: 7px dotted #fff;
+  background-color: transparent;
+  border-bottom-style: none;
+  border-right-style: none;
+  border-left-style: none;
+  width: 75%;
+  margin: 0 auto;
+}
+h2 {
+  font-size: 40px;
+  margin-top: 7px;
+}
+sup {
+  font-size: 20px;
+  font-style: oblique;
+}
+form {
+  margin-top: 24px;
+}
+img {
+  display: block;
+  margin: 0 auto;
 }
 footer {
   font-size: 13px;
 }
-.top-box {
-  margin-bottom: 0;
+#todayInfo {
+  margin: 0px 0px 15px 149px;
 }
-.high,
-.innerHTML {
-  font-weight: 800;
+#today,
+#at {
+  padding-right: 20px;
+}
+#currentDateAndTime {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+#now,
+#hi,
+#lo {
+  display: block;
+  font-size: 20px;
+  font-style: oblique;
+  margin: 5px 0;
+}
+.form-control {
+  padding-left: 35px;
+}
+.input-group {
+  width: 550px;
+  margin: 0 auto;
 }
 
+#temp-cards-top,
+#temp-cards-bottom {
+  position: absolute;
+  left: 890px;
+  max-width: 550px;
+}
+#temp-cards-bottom {
+  top: 370px;
+  margin-top: 1em;
+}
 .content-box {
   border: 2px solid rgba(252, 255, 247, 0.4);
-  border-radius: 65px;
+  border-radius: 55px;
   box-shadow: 0 0 12px 12px rgba(255, 255, 255, 0.4);
   font-family: "Zen Maru Gothic", monospace;
-  margin: auto;
-  max-width: 1060px;
+  margin: 3em auto 1em;
+  max-width: 1230px;
+  padding: 50px 0 50px 50px;
+}
+#current-info-card {
+  height: 532px;
+  padding: 33px 0px;
+}
+.row {
+  max-width: 700px;
 }
 .card,
 .input-group {
   background: rgb(255, 255, 255, 0.1);
   border: 2px solid rgba(252, 255, 247, 0.4);
-  border-radius: 65px;
-  box-shadow: 0 0 12px 12px rgba(255, 255, 255, 0.3);
+  border-radius: 55px;
+  box-shadow: 0 0 12px 12px rgba(255, 255, 255, 0.5);
   text-align: center;
 }
 .form-control,
@@ -63,18 +127,24 @@ footer {
 .input-group-text {
   border-left: 2px solid rgba(252, 255, 247, 0.5);
 }
-.card-title {
-  font-size: 35px;
-  font-family: "Fredoka One", cursive, fantasy;
+.card-title,
+#currentDateAndTime,
+#currentToday,
+#highToday,
+#lowToday {
+  font-family: "Fredoka One", fantasy, cursive;
   color: #da70d6;
   text-shadow: 2px 2px 4px #ff0000, 0 0 1em #1606f3, 0 0 0.7em #0505fc;
 }
+.card-title {
+  font-size: 35px;
+}
+.today-temp {
+  font-size: 45px;
+}
 
-.card-text,
-.today-temp,
-#currentHour,
-#currentMinute {
-  font-size: 32px;
+.card-text {
+  font-size: 35px;
 }
 
 #toggle-box,
@@ -85,24 +155,29 @@ footer {
   box-shadow: 0 0 12px 12px rgba(255, 255, 255, 0.3);
   color: #da70d6;
   text-shadow: 2px 2px 2px #ac0000, 0 0 1em #1606f3, 0 0 0.7em #0505fc;
-  font-family: "Fredoka One", cursive, fantasy;
+  font-family: "Fredoka One", fantasy, cursive;
+  position: absolute;
+  bottom: 22px;
 }
 
 #toggle-box {
   display: inline;
   font-size: 16px;
-  padding: 1em 2em 1em 5em;
-  margin: 0 5px 0 0;
+  padding: 0.9em 2em 1em 4em;
+  left: 360px;
+
+  /* margin: 0 5px 0 0; */
 }
 #flexSwitch {
   cursor: pointer;
   float: none;
-  margin-top: 1.2em;
-  margin-left: -3.5em;
+  /* margin-top: 1.2em; */
+  /* margin-left: -3.5em; */
 }
 #current-location {
   font-size: 15px;
-  padding: 1em 3em;
+  padding: 1.1em 3em;
+  left: 150px;
 }
 #searchSubmit {
   background: transparent;
