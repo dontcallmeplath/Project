@@ -2,6 +2,7 @@ let now = new Date();
 currentTime();
 updateDayNames();
 
+// establishes current day
 function updateDayNames() {
   let days = [
     "SUNDAY",
@@ -16,25 +17,20 @@ function updateDayNames() {
   trimDays();
 
   function trimDays() {
-    let daysTrim = [
-      "SUN",
-      "MON",
-      "TUE",
-      "WED",
-      "THU",
-      "FRI",
-      "SAT",
-      "SUN",
-      "MON",
-      "TUE",
-      "WED",
-    ];
-    document.querySelector("#firstDay").innerHTML = daysTrim[now.getDay() + 1];
-    document.querySelector("#secondDay").innerHTML = daysTrim[now.getDay() + 2];
-    document.querySelector("#thirdDay").innerHTML = daysTrim[now.getDay() + 3];
-    document.querySelector("#fourthDay").innerHTML = daysTrim[now.getDay() + 4];
+    const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+    const now = new Date(); // Ensure 'now' is defined
+    const currentDay = now.getDay();
+    const elements = ["#firstDay", "#secondDay", "#thirdDay", "#fourthDay"];
+
+    // Iterate through the next 4 days
+    elements.forEach((selector, index) => {
+      const dayIndex = (currentDay + index + 1) % 7;
+      document.querySelector(selector).innerHTML = days[dayIndex];
+    });
   }
 }
+
+// establishes current time of day
 function currentTime() {
   let hour = now.getHours();
   let currentHour = document.querySelector("#currentHour");
@@ -64,12 +60,15 @@ let input = document.querySelector("#city");
 let units = "imperial";
 let apiKey = "ce488b4abdc5eaf9759b2ac9b9434934";
 function makeFirstCallFromInput(event) {
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${input.value}&units=${units}&exclude=minutely,hourly,alerts&APPid=${apiKey}`;
-  fetch(apiUrl).then(function updateHeading(response) {
-    if (response.status == 200) {
-      axios.get(apiUrl).then(updateURL);
+  let apiUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${input.value}&limit=1&appid=${apiKey}`;
+
+  axios.get(apiUrl).then(function updateHeading(response) {
+    if (response.headers["content-length"] > 2 && response.status == 200) {
+      updateURL(response);
+      input.value = "";
     } else {
       document.querySelector("h2").innerHTML = "CHECK CITY & TRY AGAIN";
+      input.value = "";
     }
   });
   event.preventDefault();
@@ -79,73 +78,74 @@ weatherCity.addEventListener("submit", makeFirstCallFromInput);
 
 // updates temps based on city entered = city => coordinates => api call w/ forecast
 function updateURL(response) {
-  let latCoords = response.data.coord.lat;
-  let lonCoords = response.data.coord.lon;
-  document.querySelector("h2").innerHTML = response.data.name.toUpperCase();
-  apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${latCoords}&lon=${lonCoords}&exclude=minutely,hourly,alerts&units=${units}&appid=${apiKey}`;
+  let latCoords = response.data[0].lat;
+  let lonCoords = response.data[0].lon;
+  document.querySelector("h2").innerHTML = response.data[0].name.toUpperCase();
+  apiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latCoords}&lon=${lonCoords}&exclude=minutely,hourly,alerts&units=${units}&cnt=5&appid=${apiKey}`;
   axios.get(apiUrl).then(showTemperature);
 }
 
+// displays the temps across the forecast
 function showTemperature(response) {
-  showIcons(response);
+  showIcons(response.data.list);
+
+  let tempList = response.data.list;
+  let highList = [];
+  let lowList = [];
+
+  const highTempSelectors = [
+    "#highToday",
+    "#tomoHigh",
+    "#nextHigh",
+    "#followHigh",
+    "#lastHigh",
+  ];
+
+  const lowTempSelectors = [
+    "#lowToday",
+    "#tomoLow",
+    "#nextLow",
+    "#followLow",
+    "#lastLow",
+  ];
+
+  for (let i = 0; i < tempList.length; i++) {
+    highList.push(Math.round(tempList[i].main.temp_max));
+  }
+
+  for (let i = 0; i < tempList.length; i++) {
+    lowList.push(Math.round(tempList[i].main.temp_min));
+  }
+
   document.querySelector("#currentToday").innerHTML = `${Math.round(
-    response.data.current.temp
+    tempList[0].main.temp
   )}°`;
-  document.querySelector("#highToday").innerHTML = `${Math.round(
-    response.data.daily[0].temp.max
-  )}°`;
-  document.querySelector("#lowToday").innerHTML = `${Math.round(
-    response.data.daily[0].temp.min
-  )}°`;
-  document.querySelector("#tomoHigh").innerHTML = `${Math.round(
-    response.data.daily[1].temp.max
-  )}°`;
-  document.querySelector("#nextHigh").innerHTML = `${Math.round(
-    response.data.daily[2].temp.max
-  )}°`;
-  document.querySelector("#followHigh").innerHTML = `${Math.round(
-    response.data.daily[3].temp.max
-  )}°`;
-  document.querySelector("#lastHigh").innerHTML = `${Math.round(
-    response.data.daily[4].temp.max
-  )}°`;
-  document.querySelector("#tomoLow").innerHTML = `${Math.round(
-    response.data.daily[1].temp.min
-  )}°`;
-  document.querySelector("#nextLow").innerHTML = `${Math.round(
-    response.data.daily[2].temp.min
-  )}°`;
-  document.querySelector("#followLow").innerHTML = `${Math.round(
-    response.data.daily[3].temp.min
-  )}°`;
-  document.querySelector("#lastLow").innerHTML = `${Math.round(
-    response.data.daily[4].temp.min
-  )}°`;
+
+  highTempSelectors.forEach((selector, index) => {
+    document.querySelector(selector).innerHTML = `${highList[index]}°`;
+  });
+
+  lowTempSelectors.forEach((selector, index) => {
+    document.querySelector(selector).innerHTML = `${lowList[index]}°`;
+  });
 }
 
-function showIcons(response) {
-  let icon1 = response.data.daily[0].weather[0].icon[0];
-  let icon2 = response.data.daily[0].weather[0].icon[1];
-  iconURL = `https://openweathermap.org/img/wn/${icon1}${icon2}n.png`;
-  document.getElementById("tomoIcon").src = iconURL;
+// displays the icons associated with the weather
+function showIcons(list) {
+  let icons = [];
+  const elements = ["tomoIcon", "nextIcon", "followIcon", "lastIcon"];
 
-  icon1 = response.data.daily[1].weather[0].icon[0];
-  icon2 = response.data.daily[1].weather[0].icon[1];
-  iconURL = `https://openweathermap.org/img/wn/${icon1}${icon2}n.png`;
-  document.getElementById("nextIcon").src = iconURL;
+  for (let i = 1; i < list.length; i++) {
+    icons.push(list[i].weather[0].icon);
+  }
 
-  icon1 = response.data.daily[2].weather[0].icon[0];
-  icon2 = response.data.daily[2].weather[0].icon[1];
-  iconURL = `https://openweathermap.org/img/wn/${icon1}${icon2}n.png`;
-  document.getElementById("followIcon").src = iconURL;
-
-  icon1 = response.data.daily[3].weather[0].icon[0];
-  icon2 = response.data.daily[3].weather[0].icon[1];
-  iconURL = `https://openweathermap.org/img/wn/${icon1}${icon2}n.png`;
-  document.getElementById("lastIcon").src = iconURL;
+  elements.forEach((element, index) => {
+    iconURL = `https://openweathermap.org/img/wn/${icons[index]}.png`;
+    document.getElementById(element).src = iconURL;
+  });
 }
 
-// CELSIUS TOGGLE CLICK EVENT
+// CELSIUS TOGGLE CLICK EVENT - updates temp units displayed
 let lat = null;
 let long = null;
 function toggleSwitchClick() {
@@ -153,60 +153,62 @@ function toggleSwitchClick() {
   let cssOfToggle = window.getComputedStyle(inputSwitch);
 
   if (cssOfToggle.backgroundColor === `rgb(13, 110, 253)`) {
-    // console.log("this is the if end");
     showCelsius();
   } else {
-    // console.log("this is the else end");
     showImperial();
   }
 }
-document
+document //click event for the toggle --
   .querySelector(".form-check-input")
   .addEventListener("click", toggleSwitchClick);
 
 function showCelsius() {
   units = "metric";
-  if (document.querySelector("h2").innerHTML === "TODAY") {
+  if (document.querySelector("h2").innerHTML === "NASHVILLE") {
     units = "metric";
     geoFetch();
   } else {
-    input = document.querySelector("h2").innerHTML;
-    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${input}&units=${units}&exclude=minutely,hourly,alerts&APPid=${apiKey}`;
+    // input = document.querySelector("#city");
+    let apiUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${input.value}&limit=1&appid=${apiKey}`;
     axios.get(apiUrl).then(updateURL);
   }
 }
 
-function showImperial() {
+https: function showImperial() {
   units = "imperial";
-  if (document.querySelector("h2").innerHTML === "TODAY") {
+  if (document.querySelector("h2").innerHTML === "NASHVILLE") {
     units = "imperial";
     geoFetch();
   } else {
-    input = document.querySelector("h2").innerHTML;
-    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${input}&units=${units}&exclude=minutely,hourly,alerts&APPid=${apiKey}`;
+    // input = document.querySelector("#city");
+    let apiUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${input.value}&limit=1&appid=${apiKey}`;
     axios.get(apiUrl).then(updateURL);
   }
 }
-
 // END OF CELSIUS TOGGLE
 
 // displays current location's temps on click
 function fetchCurrentPosition(position) {
   lat = position.coords.latitude;
   long = position.coords.longitude;
-  let url = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&exclude=minutely,hourly,alerts&units=${units}&appid=${apiKey}`;
+  let url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&exclude=minutely,hourly,alerts&units=${units}&cnt=5&appid=${apiKey}`;
   axios.get(url).then(pullCoords);
 
   function pullCoords(response) {
-    document.querySelector("h2").innerHTML = "TODAY";
+    document.querySelector("h2").innerHTML =
+      response.data.city.name.toUpperCase();
     showTemperature(response);
   }
 }
-// can't get celsius button to work when location is pulled and "today" is h2 - can you use lat/lon to display geoFetch city ? instead of "today" ?
+
 function geoFetch() {
   navigator.geolocation.getCurrentPosition(fetchCurrentPosition);
 }
 document.querySelector("#current-location").addEventListener("click", geoFetch);
+
+// Displays weather for Nashville on load
+apiUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=36.174465&lon=-86.767960&exclude=minutely,hourly,alerts&units=${units}&cnt=5&appid=${apiKey}`;
+axios.get(apiUrl).then(showTemperature);
 
 console.log("spam v for rave");
 window.addEventListener("keydown", (event) => {
@@ -219,7 +221,3 @@ window.addEventListener("keyup", (event) => {
     document.body.style.background = "";
   }
 });
-
-// Displays weather for Nashville on load
-apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=36.174465&lon=-86.767960&exclude=minutely,hourly,alerts&units=imperial&appid=${apiKey}`;
-axios.get(apiUrl).then(showTemperature);
